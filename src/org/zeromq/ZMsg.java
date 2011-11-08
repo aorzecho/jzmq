@@ -3,6 +3,8 @@ package org.zeromq;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
@@ -48,7 +50,7 @@ public class ZMsg implements Iterable<ZFrame>, Deque<ZFrame>{
 	/**
 	 * Class Constructor
 	 */
-	protected ZMsg() {
+	public ZMsg() {
 		frames = new ArrayDeque<ZFrame>();
 	}
 	
@@ -250,6 +252,27 @@ public class ZMsg implements Iterable<ZFrame>, Deque<ZFrame>{
 			return null;
 		}
 	}
+
+        /**
+         * Dump the message in human readable format for debugging and tracing. 
+         * Processes max 10 frames.
+         **/
+        @Override
+        public String toString() {
+            try {
+                StringWriter sw = new StringWriter();
+                PrintWriter out = new PrintWriter(sw);
+                out.printf("--------------------------------------\n");
+                for (ZFrame frame : frames) {
+                    out.printf("[%03d] %s\n", frame.getData().length, frame.toString());
+                }
+                sw.close();
+                return sw.toString();
+            } catch (Exception e) {
+                return "toString exception: " + e.toString() 
+                    + " (" + super.toString() + ")";
+            } 
+        }
 	
 	// ********* Implement Iterable Interface *************** //
 	@Override

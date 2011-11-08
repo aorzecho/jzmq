@@ -51,7 +51,7 @@ public class ZFrame {
 	 * Copies String into frame data
 	 * @param data
 	 */
-	protected ZFrame(String data) {
+	public ZFrame(String data) {
 		if (data != null) {
 			this.data = data.getBytes();
 		}
